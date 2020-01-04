@@ -7,7 +7,7 @@ public class Film {
 	private String title;
 	private String desc;
 	private int realeaseYear;
-	private int langId;
+	private String langId;
 	private int rentDur;
 	private double rate;
 	private int length;
@@ -19,7 +19,7 @@ public class Film {
 	public Film() {
 	}
 	
-	public Film(int id, String title, String desc, int realeaseYear, int langId, int rentDur, double rate, int length,
+	public Film(int id, String title, String desc, int realeaseYear, String langId, int rentDur, double rate, int length,
 			double repCost, String rating, String features) {
 		super();
 		this.id = id;
@@ -33,6 +33,15 @@ public class Film {
 		this.repCost = repCost;
 		this.rating = rating;
 		this.features = features;
+	}
+
+	public Film(int id, String title, String desc, int realeaseYear, String langId, String rating) {
+		super();
+		this.title = title;
+		this.desc = desc;
+		this.realeaseYear = realeaseYear;
+		this.langId = langId;
+		this.rating = rating;
 	}
 
 	public int getId() {
@@ -67,11 +76,11 @@ public class Film {
 		this.realeaseYear = realeaseYear;
 	}
 
-	public int getLangId() {
+	public String getLangId() {
 		return langId;
 	}
 
-	public void setLangId(int langId) {
+	public void setLangId(String langId) {
 		this.langId = langId;
 	}
 
@@ -170,10 +179,11 @@ public class Film {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((actors == null) ? 0 : actors.hashCode());
 		result = prime * result + ((desc == null) ? 0 : desc.hashCode());
 		result = prime * result + ((features == null) ? 0 : features.hashCode());
 		result = prime * result + id;
-		result = prime * result + langId;
+		result = prime * result + ((langId == null) ? 0 : langId.hashCode());
 		result = prime * result + length;
 		long temp;
 		temp = Double.doubleToLongBits(rate);
@@ -196,6 +206,11 @@ public class Film {
 		if (getClass() != obj.getClass())
 			return false;
 		Film other = (Film) obj;
+		if (actors == null) {
+			if (other.actors != null)
+				return false;
+		} else if (!actors.equals(other.actors))
+			return false;
 		if (desc == null) {
 			if (other.desc != null)
 				return false;
@@ -208,7 +223,10 @@ public class Film {
 			return false;
 		if (id != other.id)
 			return false;
-		if (langId != other.langId)
+		if (langId == null) {
+			if (other.langId != null)
+				return false;
+		} else if (!langId.equals(other.langId))
 			return false;
 		if (length != other.length)
 			return false;

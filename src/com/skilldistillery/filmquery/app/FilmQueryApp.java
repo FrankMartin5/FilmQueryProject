@@ -1,6 +1,7 @@
 package com.skilldistillery.filmquery.app;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 import com.skilldistillery.filmquery.database.DatabaseAccessor;
@@ -44,10 +45,11 @@ public class FilmQueryApp {
 			System.out.println(pickFilm);
 			break;
 		case "2":
-			System.out.println("Please search by keyword: ");
+			System.out.println("Please enter in a keyword: ");
 			userInput = input.next();
-			Film keyword =  db.findFilmById(Integer.parseInt(userInput));
+			List<Film> keyword =  db.findFilmsByKeyword(userInput);
 			System.out.println(keyword);
+			break;
 		case "3":
 			keepGoing = false;
 			break;
