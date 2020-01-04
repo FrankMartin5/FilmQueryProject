@@ -1,5 +1,6 @@
 package com.skilldistillery.filmquery.app;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import com.skilldistillery.filmquery.database.DatabaseAccessor;
@@ -10,18 +11,18 @@ public class FilmQueryApp {
   
   DatabaseAccessor db = new DatabaseAccessorObject();
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws SQLException, ClassNotFoundException {
     FilmQueryApp app = new FilmQueryApp();
-    app.test();
-//    app.launch();
+//    app.test();
+    app.launch();
   }
 
-  private void test() {
-    Film film = db.findFilmById(1);
-    System.out.println(film);
-  }
+//  private void test() throws SQLException {
+//    Film film = db.findFilmById(1);
+//    System.out.println(film);
+//  }
 
-  private void launch() {
+  private void launch() throws SQLException {
     Scanner input = new Scanner(System.in);
     
     startUserInterface(input);
@@ -29,8 +30,33 @@ public class FilmQueryApp {
     input.close();
   }
 
-  private void startUserInterface(Scanner input) {
-    
+  private void startUserInterface(Scanner input) throws SQLException {
+    boolean keepGoing = true;
+    do {
+    	System.out.println("1. Search film by id \n2. Search film by keyword \n3. Exit ");
+    	String userInput =  input.next();
+    	
+    	switch (userInput) {
+		case "1":
+			System.out.println("What film would you like to retrieve?");
+			userInput = input.next();
+			Film pickFilm = db.findFilmById(Integer.parseInt(userInput));
+			System.out.println(pickFilm);
+			break;
+		case "2":
+			System.out.println("Please search by keyword: ");
+			userInput = input.next();
+			Film keyword =  db.findFilmById(Integer.parseInt(userInput));
+			System.out.println(keyword);
+		case "3":
+			keepGoing = false;
+			break;
+		default:
+			System.out.println("That is not a valid selection");
+			break;
+		}
+    } while(keepGoing);
   }
+  
 
 }
