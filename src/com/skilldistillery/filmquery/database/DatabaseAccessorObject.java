@@ -30,7 +30,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		Connection conn;
 		try {
 			conn = DriverManager.getConnection(url, user, pass);
-		String sql = "SELECT id, title, description, release_year, rating FROM film WHERE id = ?";
+		String sql = "SELECT id, title, description, release_year, rating, language_id FROM film WHERE id = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, filmId);
 		ResultSet filmResult = stmt.executeQuery();
@@ -41,6 +41,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			film.setDesc(filmResult.getString("description"));
 			film.setRealeaseYear(filmResult.getInt("release_year"));
 			film.setRating(filmResult.getString("rating"));
+			film.setLangId(findLanguage(filmResult.getInt("language_id")));
 			film.setActors(findActorsByFilmId(filmId));
 		}	
 		filmResult.close();
@@ -53,7 +54,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	}
 
 	public String findLanguage(int langId) {
-		String name = null;
+		String name = "";
 		Connection conn;
 		try {
 			conn = DriverManager.getConnection(url, user, pass);
@@ -62,7 +63,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		stmt.setInt(1, langId);
 		ResultSet langResult = stmt.executeQuery();
 		if (langResult.next()) {
-		name =langResult.getString("name");		
+		name =langResult.getString("name");	
+		System.err.println(name);
 		}	
 		langResult.close();
 		stmt.close();
