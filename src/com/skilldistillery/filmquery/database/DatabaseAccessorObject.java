@@ -64,7 +64,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		ResultSet langResult = stmt.executeQuery();
 		if (langResult.next()) {
 		name =langResult.getString("name");	
-		System.err.println(name);
 		}	
 		langResult.close();
 		stmt.close();
