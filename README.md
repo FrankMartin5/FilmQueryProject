@@ -17,6 +17,8 @@ A program that allows the user to select a Film by an ID or by a keyword. This i
 + Java 8
 + Eclipse
 + JDBC
++ Maven
++ MAMP
 
 ## Lessons Learned
 I learned how to select and organize information for the mySQL database using JDBC.
