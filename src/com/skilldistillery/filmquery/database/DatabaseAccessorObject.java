@@ -161,36 +161,33 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 //	}
 	public List<Film> findFilmsByKeyword(String keyword) {
-		  List<Film> films = new ArrayList<>();
-		  try {
-		    Connection conn = DriverManager.getConnection(url, user, pass);
-		    String sql = "SELECT film.id, film.title, film.description, film.release_year, film.language_id, film.rating "
-		               +  " FROM film JOIN film_actor ON film.id = film_actor.film_id "
-		               + " WHERE film.title LIKE ?"
-		               + " OR film.description LIKE ? "
-		               + " OR film.release_year LIKE ? ";
-		    PreparedStatement stmt = conn.prepareStatement(sql);
-		    stmt.setString(1, "%"+keyword+"%");
-		    stmt.setString(2, "%"+keyword+"%");
-		    stmt.setString(3, "%"+keyword+"%");
-		    ResultSet rs = stmt.executeQuery();
-		    while (rs.next()) {
-		      int filmId = rs.getInt("id");
-		      String title = rs.getString("title");
-		      String desc = rs.getString("description");
-		      short releaseYear = rs.getShort("release_year");
-		      String langId = findLanguage(rs.getInt("language_id"));      
-		      String rating = rs.getString("rating");
-		      Film film = new Film(filmId, title, desc, releaseYear, langId, rating);
-		      films.add(film);
-		    }
-		    rs.close();
-		    stmt.close();
-		    conn.close();
-		  } catch (SQLException e) {
-		    e.printStackTrace();
-		  }
-		  return films;
+		List<Film> films = new ArrayList<>();
+		try {
+			Connection conn = DriverManager.getConnection(url, user, pass);
+			String sql = "SELECT film.id, film.title, film.description, film.release_year, film.language_id, film.rating "
+					+ " FROM film JOIN film_actor ON film.id = film_actor.film_id " + " WHERE film.title LIKE ?"
+					+ " OR film.description LIKE ? ";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, "%" + keyword + "%");
+			stmt.setString(2, "%" + keyword + "%");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				int filmId = rs.getInt("id");
+				String title = rs.getString("title");
+				String desc = rs.getString("description");
+				short releaseYear = rs.getShort("release_year");
+				String langId = findLanguage(rs.getInt("language_id"));
+				String rating = rs.getString("rating");
+				Film film = new Film(filmId, title, desc, releaseYear, langId, rating);
+				films.add(film);
+				film.setActors(findActorsByFilmId(filmId));
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-
+		return films;
+	}
 }

@@ -48,7 +48,9 @@ public class FilmQueryApp {
 			System.out.println("Please enter in a keyword: ");
 			userInput = input.next();
 			List<Film> keyword =  db.findFilmsByKeyword(userInput);
-			System.out.println(keyword);
+			for (Film film : keyword) {
+				System.out.println(film);
+			}
 			break;
 		case "3":
 			keepGoing = false;
